@@ -19,7 +19,6 @@ from django.urls import include, path
 import scrumapp
 
 urlpatterns = [
-    #path('', include('scrumapp.urls')),
     path('scrumapp/', include('scrumapp.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),

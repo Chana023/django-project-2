@@ -1,12 +1,16 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import TemplateView 
-# Create your views here.
-def index(request):
-    return HttpResponse("Testing")
+from django.contrib.auth.views import LoginView
 
-def login_page(request):
-    return render(request, 'scrumapp/login.html')
+import scrumapp
+# Create your views here.
+
+def home(request):
+    return render(request, 'scrumapp/home.html')
+
+class AdminLogin(LoginView):
+    template_name = 'scrumapp/login.html'
 
 class TemplateTaskView(TemplateView):
     template_name = 'scrumapp/task.html'
