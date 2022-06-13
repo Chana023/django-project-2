@@ -6,3 +6,4 @@ from scrumapp.models import User_Story
 # Register your models here.
 admin.site.register(Task)
 admin.site.register(User_Story)
+admin.site.register(User)
