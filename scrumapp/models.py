@@ -1,17 +1,14 @@
 from django.db import models
-
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 
 # class for managing user model
-class User(models.Model):
+class User(AbstractUser):
     ROLE_CHOICES = [
         ('SM', 'Scrum_Master'),
         ('D', 'Developer'),
     ]
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    email = models.EmailField(unique=True)
     role = models.CharField(max_length=2, choices=ROLE_CHOICES, default='D')
 
 
@@ -30,7 +27,7 @@ class Task(models.Model):
         ('C', 'COMPLETE'),
     ]
     name = models.CharField(max_length=255)
-    user_story = models.ForeignKey(User_Story, on_delete=models.CASCADE)
+    user_story = models.ForeignKey(User_Story, on_delete=models.CASCADE, related_name='task')
     description = models.TextField()
     status = models.CharField(max_length=1, choices=STATUS_CHOICES,default='N')
     
