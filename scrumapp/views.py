@@ -1,7 +1,13 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import TemplateView 
 from django.contrib.auth.views import LoginView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+
+
+# In application imports
+from scrumapp.models import User_Story
 
 from scrumapp.forms import CustomUserCreationForm
 # Create your views here.
@@ -33,3 +39,16 @@ class TemplateTaskView(TemplateView):
         kwargs = super().get_context_data(**kwargs)
         kwargs['Tasks'] = ['1','2','3']
         return kwargs
+
+class UserStoryCreate(CreateView):
+    model = User_Story
+    fields = '__all__'
+
+class UserStoryUpdate(UpdateView):
+    model = User_Story
+    fields = '__all__'
+
+class UserStoryDelete(DeleteView):
+    model = User_Story
+    success_url = reverse_lazy('home')
+    
