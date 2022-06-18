@@ -4,13 +4,16 @@
   {% if user_story_list %}
   <table>
     <tr>
+        <td>ID</td>
         <td>User Story Name</td>
         <td>Description</td>
     </tr>
     {% for User_Story in user_story_list %}
         <tr>
+            <td>{{ User_Story.id }}</td>
             <td>{{ User_Story.name }}</td>
             <td>{{ User_Story.description }}</td>
+            <td><a href="User_Story/{{User_Story.id}}/delete">Delete</a></td>
         </tr>
     {% endfor %}
   </table>
