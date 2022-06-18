@@ -1,5 +1,5 @@
 from msilib.schema import ListView
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.views.generic import TemplateView 
 from django.contrib.auth.views import LoginView
@@ -34,7 +34,7 @@ def register(request):
         print('test')
         if form.is_valid():
             user = form.save()
-            return HttpResponse('User created')
+            return redirect(home)
 
 class TemplateTaskView(TemplateView):
     template_name = 'scrumapp/task.html'
