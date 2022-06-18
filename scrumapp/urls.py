@@ -11,6 +11,7 @@ urlpatterns = [
     path('User_Story/create/', views.UserStoryCreate.as_view(), name='user-story-create'),
     path('User_Story/<int:pk>/update/', views.UserStoryUpdate.as_view(), name='user-story-update'),
     path('User_Story/<int:pk>/delete/', views.UserStoryDelete.as_view(), name='user-story-delete'),
+    path('User_Story/list', views.UserStoryListView.as_view(), name = 'user-story-list')
 
     
 ]

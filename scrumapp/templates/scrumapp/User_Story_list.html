@@ -1,0 +1,20 @@
+{% block user-story %}
+  <h1>User Story List</h1>
+  
+  {% if user_story_list %}
+  <table>
+    <tr>
+        <td>User Story Name</td>
+        <td>Description</td>
+    </tr>
+    {% for User_Story in user_story_list %}
+        <tr>
+            <td>{{ User_Story.name }}</td>
+            <td>{{ User_Story.description }}</td>
+        </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+    <p>There are no User stories availible</p>
+  {% endif %}
+{% endblock %}
