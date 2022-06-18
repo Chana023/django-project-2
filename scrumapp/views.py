@@ -65,4 +65,7 @@ class UserStoryDelete(DeleteView):
 class UserStoryListView(generic.ListView):
     model = User_Story
 
+class UserStoryDetailView(generic.DetailView):
+    model = User_Story
+
     

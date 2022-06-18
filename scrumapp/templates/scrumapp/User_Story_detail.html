@@ -1,0 +1,9 @@
+{% block content %}
+<h1>{{user_story.name}}</h1>
+<p>{{user_story.id}}</p>
+<p>{{user_story.description}}</p>
+
+
+<a href="{% url 'home'%}">Home</a>
+
+{% endblock %}
