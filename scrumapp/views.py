@@ -2,7 +2,7 @@ from msilib.schema import ListView
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.views.generic import TemplateView 
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.views import generic
@@ -26,9 +26,12 @@ def home(request):
 class AdminLogin(LoginView):
     template_name = 'scrumapp/login.html'
 
+class AdminLogout(LogoutView):
+    template_name = 'scrumapp/logout.html'
+
 def register(request):
     if request.method == 'GET':
-        return render(request, 'scrumapp/login.html', {'form': CustomUserCreationForm})
+        return render(request, 'scrumapp/register.html', {'form': CustomUserCreationForm})
     elif request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         print('test')
