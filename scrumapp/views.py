@@ -6,6 +6,8 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.views import generic
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # In application imports
 from scrumapp.models import User_Story
@@ -13,6 +15,7 @@ from scrumapp.models import User_Story
 from scrumapp.forms import CustomUserCreationForm
 # Create your views here.
 
+@login_required
 def home(request):
     user_story = User_Story.objects.all()
 
@@ -26,7 +29,7 @@ def home(request):
 class AdminLogin(LoginView):
     template_name = 'scrumapp/login.html'
 
-class AdminLogout(LogoutView):
+class AdminLogout(LoginRequiredMixin,LogoutView):
     template_name = 'scrumapp/logout.html'
 
 def register(request):
@@ -39,7 +42,7 @@ def register(request):
             user = form.save()
             return redirect(home)
 
-class TemplateTaskView(TemplateView):
+class TemplateTaskView(LoginRequiredMixin,TemplateView):
     template_name = 'scrumapp/task.html'
 
     def get_context_data(self, **kwargs):
@@ -51,24 +54,24 @@ class TemplateTaskView(TemplateView):
         kwargs['Tasks'] = ['1','2','3']
         return kwargs
 
-class UserStoryCreate(CreateView):
+class UserStoryCreate(LoginRequiredMixin,CreateView):
     model = User_Story
     fields = '__all__'
     success_url = reverse_lazy(home)
 
-class UserStoryUpdate(UpdateView):
+class UserStoryUpdate(LoginRequiredMixin,UpdateView):
     model = User_Story
     fields = '__all__'
     success_url = reverse_lazy(home)
 
-class UserStoryDelete(DeleteView):
+class UserStoryDelete(LoginRequiredMixin,DeleteView):
     model = User_Story
     success_url = reverse_lazy(home)
 
-class UserStoryListView(generic.ListView):
+class UserStoryListView(LoginRequiredMixin,generic.ListView):
     model = User_Story
 
-class UserStoryDetailView(generic.DetailView):
+class UserStoryDetailView(LoginRequiredMixin,generic.DetailView):
     model = User_Story
 
     
