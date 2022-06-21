@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+from telnetlib import LOGOUT
+
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -130,3 +133,7 @@ AUTH_USER_MODEL = 'scrumapp.User'
 
 #Fowarded to below after login:
 LOGIN_REDIRECT_URL = 'home'
+
+#Overite default login page
+LOGIN_URL = '/scrumapp/login'
+LOGOUT_REDIRECT_URL = '/scrumapp/login'
