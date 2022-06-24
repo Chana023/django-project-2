@@ -1,0 +1,30 @@
+{% block Task-view %}
+  <h1>Task List</h1>
+  <a href="{% url 'task-create' %}">Add Task</a>
+  <br>
+  <br>
+
+  {% if task_list %}
+  <table>
+    <tr>
+        <td>ID</td>
+        <td>Task Name</td>
+        <td>User story</td>
+        <td>Description</td>
+        <td>status</td>
+    </tr>
+    {% for task in task_list %}
+        <tr>
+            <td>{{ task.id }}</td>
+            <td><a href="{% url 'task-detail' task.id %}">{{ task.name }}</a></td>
+            <td><a>{{task.user_story.name }}</a></td>
+            <td>{{ task.description }}</td>
+            <td>{{ task.status }}</td>
+            <td><a href="{% url 'task-delete' task.id %}">Delete</a></td>
+        </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+    <p>There are no Tasks availible</p>
+  {% endif %}
+{% endblock %}

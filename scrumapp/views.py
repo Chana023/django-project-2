@@ -90,5 +90,10 @@ class TaskDelete(LoginRequiredMixin,DeleteView):
     model = Task
     success_url = reverse_lazy(home)
 
+class TaskListView(LoginRequiredMixin, generic.ListView):
+    model = Task
+
+class TaskDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Task
 
     
