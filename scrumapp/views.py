@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # In application imports
-from scrumapp.models import User_Story
+from scrumapp.models import Task, User_Story
 
 from scrumapp.forms import CustomUserCreationForm
 # Create your views here.
@@ -23,7 +23,6 @@ def home(request):
         'user_story_list': user_story
 
     }
-    print(user_story)
     return render(request, 'scrumapp/home.html', context=context)
 
 class AdminLogin(LoginView):
@@ -73,5 +72,23 @@ class UserStoryListView(LoginRequiredMixin,generic.ListView):
 
 class UserStoryDetailView(LoginRequiredMixin,generic.DetailView):
     model = User_Story
+
+
+#Task views are created below
+
+class TaskCreateView(LoginRequiredMixin, CreateView):
+    model = Task
+    fields =  '__all__'
+    success_url = reverse_lazy(home)
+
+class TaskUpdate(LoginRequiredMixin, UpdateView):
+    model = Task
+    fields ="__all__"
+    success_url = reverse_lazy(home)
+
+class TaskDelete(LoginRequiredMixin,DeleteView):
+    model = Task
+    success_url = reverse_lazy(home)
+
 
     

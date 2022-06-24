@@ -14,7 +14,10 @@ urlpatterns = [
     path('User_Story/<int:pk>/delete/', views.UserStoryDelete.as_view(), name='user-story-delete'),
     path('User_Story/list', views.UserStoryListView.as_view(), name = 'user-story-list'),
     path('User_Story/detail/<int:pk>', views.UserStoryDetailView.as_view(), name = 'user-story-detail'),
-    
+    #Task model paths
+    path('Task/create/', views.TaskCreateView.as_view(), name='task-create'),
+    path('Task/<int:pk>/update/', views.TaskUpdate.as_view(), name='task-update'),
+    path('Task/<int:pk>/delete/',views.TaskDelete.as_view(), name='task-delete'),
 
     
 ]
