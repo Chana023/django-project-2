@@ -1,0 +1,13 @@
+{% block content %}
+<h1>{{task.name}}</h1>
+<p>Task ID: {{task.id}}</p>
+<p>Associated user story: {{task.user_story.name }}</p>
+<p>Task description: {{ task.description }}</p>
+<p>Task status: {{ task.status }}</p>
+
+
+<a href="{% url 'home'%}">Home</a>
+<br>
+<a href="{% url 'task-list' %}">Task list</a>
+
+{% endblock %}

@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # In application imports
-from scrumapp.models import User_Story
+from scrumapp.models import Task, User_Story
 
 from scrumapp.forms import CustomUserCreationForm
 # Create your views here.
@@ -23,7 +23,6 @@ def home(request):
         'user_story_list': user_story
 
     }
-    print(user_story)
     return render(request, 'scrumapp/home.html', context=context)
 
 class AdminLogin(LoginView):
@@ -42,17 +41,6 @@ def register(request):
             user = form.save()
             return redirect(home)
 
-class TemplateTaskView(LoginRequiredMixin,TemplateView):
-    template_name = 'scrumapp/task.html'
-
-    def get_context_data(self, **kwargs):
-        #kwargs.setdefault('view', self)
-        #if self.extra_context is not None:
-        #    kwargs.update(self.extra_context)
-        #return kwargs
-        kwargs = super().get_context_data(**kwargs)
-        kwargs['Tasks'] = ['1','2','3']
-        return kwargs
 
 class UserStoryCreate(LoginRequiredMixin,CreateView):
     model = User_Story
@@ -71,7 +59,48 @@ class UserStoryDelete(LoginRequiredMixin,DeleteView):
 class UserStoryListView(LoginRequiredMixin,generic.ListView):
     model = User_Story
 
+    def get_context_data(self, **kwargs):
+        print('hello there')
+        print(kwargs)
+        return super().get_context_data(**kwargs)
+
 class UserStoryDetailView(LoginRequiredMixin,generic.DetailView):
     model = User_Story
+
+    def get_context_data(self, **kwargs):
+
+        context = {}
+        if self.object:
+            id_for_for_linked_user_story = self.object.id
+            tasklist = Task.objects.filter(user_story=id_for_for_linked_user_story)
+            context = {
+                'task_list': tasklist
+            }
+            context.update(kwargs)
+            print(context)
+        return super().get_context_data(**context)
+
+
+#Task views are created below
+
+class TaskCreateView(LoginRequiredMixin, CreateView):
+    model = Task
+    fields =  '__all__'
+    success_url = reverse_lazy(home)
+
+class TaskUpdate(LoginRequiredMixin, UpdateView):
+    model = Task
+    fields ="__all__"
+    success_url = reverse_lazy(home)
+
+class TaskDelete(LoginRequiredMixin,DeleteView):
+    model = Task
+    success_url = reverse_lazy(home)
+
+class TaskListView(LoginRequiredMixin, generic.ListView):
+    model = Task
+
+class TaskDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Task
 
     
