@@ -16,6 +16,7 @@
             <td>{{ User_Story.id }}</td>
             <td><a href="User_Story/detail/{{User_Story.id}}">{{ User_Story.name }}</a></td>
             <td>{{ User_Story.description }}</td>
+            <td><a href="User_Story/{{User_Story.id}}/update">Update</a></td>
             <td><a href="User_Story/{{User_Story.id}}/delete">Delete</a></td>
         </tr>
     {% endfor %}

@@ -78,8 +78,6 @@ class UserStoryDetailView(LoginRequiredMixin,generic.DetailView):
             }
             context.update(kwargs)
             print(context)
-
-        
         return super().get_context_data(**context)
 
 
