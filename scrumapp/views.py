@@ -60,7 +60,6 @@ class UserStoryListView(LoginRequiredMixin,generic.ListView):
     model = User_Story
 
     def get_context_data(self, **kwargs):
-        print('hello there')
         print(kwargs)
         return super().get_context_data(**kwargs)
 
@@ -77,7 +76,6 @@ class UserStoryDetailView(LoginRequiredMixin,generic.DetailView):
                 'task_list': tasklist
             }
             context.update(kwargs)
-            print(context)
         return super().get_context_data(**context)
 
 
