@@ -10,14 +10,17 @@
         <td>ID</td>
         <td>User Story Name</td>
         <td>Description</td>
+        <td>Scrum Master Assigned</td>
     </tr>
     {% for User_Story in user_story_list %}
         <tr>
             <td>{{ User_Story.id }}</td>
             <td><a href="User_Story/detail/{{User_Story.id}}">{{ User_Story.name }}</a></td>
             <td>{{ User_Story.description }}</td>
+            <td>{{ User_Story.scrum_master }}</td>
             <td><a href="User_Story/{{User_Story.id}}/update">Update</a></td>
             <td><a href="User_Story/{{User_Story.id}}/delete">Delete</a></td>
+            
         </tr>
     {% endfor %}
   </table>
