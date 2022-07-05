@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # In application imports
-from scrumapp.models import Task, User_Story
+from scrumapp.models import Task, User, User_Story
 
 from scrumapp.forms import CustomUserCreationForm
 # Create your views here.
@@ -18,11 +18,25 @@ from scrumapp.forms import CustomUserCreationForm
 @login_required
 def home(request):
     user_story = User_Story.objects.all()
+    user_story_id_list = []
+    
+    # Get a list of the user story ids associated to a developer
+    current_user = request.user
+    user_story_id_for_developer = Task.objects.filter(developer = current_user.id).values('user_story_id')
 
-    context = {
-        'user_story_list': user_story
-
-    }
+    for story_id in user_story_id_for_developer:
+        user_story_id_list.append(story_id['user_story_id'])
+    user_story_dev = User_Story.objects.filter(pk__in = user_story_id_list)
+    
+    # Based on the group assigned allocate a different context to what the user can see
+    if current_user.groups.filter(name='Developer').exists():
+        context = {
+            'user_story_list': user_story_dev
+        }
+    else:
+        context = {
+            'user_story_list': user_story
+        }
     return render(request, 'scrumapp/home.html', context=context)
 
 class AdminLogin(LoginView):
@@ -60,7 +74,6 @@ class UserStoryListView(LoginRequiredMixin,generic.ListView):
     model = User_Story
 
     def get_context_data(self, **kwargs):
-        print(kwargs)
         return super().get_context_data(**kwargs)
 
 class UserStoryDetailView(LoginRequiredMixin,generic.DetailView):
