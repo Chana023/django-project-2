@@ -17,6 +17,7 @@ class User_Story(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     last_update = models.DateTimeField(auto_now=True)
+    scrum_master = models.ForeignKey(User, on_delete=models.SET_NULL, default=None, blank=True, null=True)
 
 
 #class for managing the task model
@@ -30,4 +31,5 @@ class Task(models.Model):
     user_story = models.ForeignKey(User_Story, on_delete=models.CASCADE, related_name='task')
     description = models.TextField()
     status = models.CharField(max_length=1, choices=STATUS_CHOICES,default='N')
+    developer = models.ForeignKey(User, on_delete=models.SET_NULL, default=None, blank=True, null=True)
     

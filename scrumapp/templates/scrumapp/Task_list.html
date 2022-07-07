@@ -12,6 +12,7 @@
         <td>User story</td>
         <td>Description</td>
         <td>Status</td>
+        <td>Developer Assigned</td>
     </tr>
     {% for task in task_list %}
         <tr>
@@ -20,6 +21,7 @@
             <td><a>{{task.user_story.name }}</a></td>
             <td>{{ task.description }}</td>
             <td>{{ task.status }}</td>
+            <td>{{ task.developer }}</td>
             <td><a href="{% url 'task-update' task.id %}">Update</a></td>
             <td><a href="{% url 'task-delete' task.id %}">Delete</a></td>
         </tr>
