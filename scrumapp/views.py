@@ -1,15 +1,12 @@
-from msilib.schema import ListView
 from django.shortcuts import redirect, render
-from django.http import HttpResponse
-from django.views.generic import TemplateView 
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django import template
 from django.contrib.auth.models import Group
+from django.core.exceptions import PermissionDenied
 
 # In application imports
 from scrumapp.models import Task, User, User_Story
@@ -110,6 +107,21 @@ class TaskUpdate(LoginRequiredMixin, UpdateView):
     model = Task
     fields ="__all__"
     success_url = reverse_lazy(home)
+
+    def dispatch(self, request, *args, **kwargs):
+        developeridDB = 0
+        task = Task.objects.filter(id = kwargs['pk']).values()
+        
+        for developerid in task:
+            developeridDB = developerid['developer_id']
+        
+        if request.user.groups.filter(name='Developer') and developeridDB == request.user.id:
+            return super(TaskUpdate, self).dispatch(request, *args, **kwargs)
+        elif request.user.groups.filter(name='Scrum Master'):
+            return super(TaskUpdate, self).dispatch(request, *args, **kwargs)
+        else:
+            raise PermissionDenied()
+        
 
 class TaskDelete(LoginRequiredMixin, PermissionRequiredMixin,DeleteView):
     model = Task
