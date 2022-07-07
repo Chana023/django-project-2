@@ -7,12 +7,15 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django import template
+from django.contrib.auth.models import Group
 
 # In application imports
 from scrumapp.models import Task, User, User_Story
 
 from scrumapp.forms import CustomUserCreationForm
+
 # Create your views here.
 
 @login_required
@@ -56,21 +59,24 @@ def register(request):
             return redirect(home)
 
 
-class UserStoryCreate(LoginRequiredMixin,CreateView):
+class UserStoryCreate(LoginRequiredMixin, PermissionRequiredMixin,CreateView):
     model = User_Story
     fields = '__all__'
+    permission_required = 'scrumapp.add_user_story'
     success_url = reverse_lazy(home)
 
-class UserStoryUpdate(LoginRequiredMixin,UpdateView):
+class UserStoryUpdate(LoginRequiredMixin, PermissionRequiredMixin,UpdateView):
     model = User_Story
     fields = '__all__'
+    permission_required = 'scrumapp.change_user_story'
     success_url = reverse_lazy(home)
 
-class UserStoryDelete(LoginRequiredMixin,DeleteView):
+class UserStoryDelete(LoginRequiredMixin, PermissionRequiredMixin,DeleteView):
     model = User_Story
+    permission_required = 'scrumapp.delete_user_story'
     success_url = reverse_lazy(home)
 
-class UserStoryListView(LoginRequiredMixin,generic.ListView):
+class UserStoryListView(LoginRequiredMixin, generic.ListView):
     model = User_Story
 
     def get_context_data(self, **kwargs):
@@ -94,9 +100,10 @@ class UserStoryDetailView(LoginRequiredMixin,generic.DetailView):
 
 #Task views are created below
 
-class TaskCreateView(LoginRequiredMixin, CreateView):
+class TaskCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Task
     fields =  '__all__'
+    permission_required = 'scrumapp.add_task'
     success_url = reverse_lazy(home)
 
 class TaskUpdate(LoginRequiredMixin, UpdateView):
@@ -104,8 +111,9 @@ class TaskUpdate(LoginRequiredMixin, UpdateView):
     fields ="__all__"
     success_url = reverse_lazy(home)
 
-class TaskDelete(LoginRequiredMixin,DeleteView):
+class TaskDelete(LoginRequiredMixin, PermissionRequiredMixin,DeleteView):
     model = Task
+    permission_required = 'scrumapp.delete_task'
     success_url = reverse_lazy(home)
 
 class TaskListView(LoginRequiredMixin, generic.ListView):
