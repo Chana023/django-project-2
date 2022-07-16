@@ -1,0 +1,24 @@
+version: "3.8"
+services:
+  app: 
+    build: .
+    volumes:
+      - .:/usr/src/app
+    ports:
+     - 8000:8000
+    image: app:scrumapp
+    container_name: scrumapp
+    command: python manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - db
+  db:
+    image: postgres
+    volumes:
+    - .data/db:/var/lib/postgressql/data
+    environment:
+      - POSTGRES_DB=scrumappBD
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Infamous1!
+    container_name: postgres_db
+    ports:
+      - 5432:5432
