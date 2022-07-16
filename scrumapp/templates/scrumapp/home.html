@@ -1,5 +1,6 @@
+{% extends 'scrumapp/index.html' %}
 
-<html>
+{% block content %}
 <body>
     <h1>Home</h1>
     <a href="{% url 'logout' %}">Logout</a>
@@ -12,7 +13,5 @@
     <br>
 
 </body>
-
-
-</html>
+{% endblock %}       
 
