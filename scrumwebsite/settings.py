@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'scrumapp',
+    'crispy_forms',
+    'crispy_bootstrap5',
     #'scrumapp.apps.ScrumappConfig',
 ]
 
@@ -127,7 +129,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = (
-  os.path.join(BASE_DIR, 'static'),
+  os.path.join(BASE_DIR, 'scrumapp/static'),
 )
 
 # Default primary key field type
@@ -144,3 +146,6 @@ LOGIN_REDIRECT_URL = 'home'
 #Overite default login page
 LOGIN_URL = '/scrumapp/login'
 LOGOUT_REDIRECT_URL = '/scrumapp/login'
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"

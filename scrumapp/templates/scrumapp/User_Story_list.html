@@ -1,12 +1,12 @@
 {% extends 'scrumapp/index.html' %}
-{% block user-story %}
+{% block content %}
   <h1>User Story List</h1>
   <a href="User_Story/create">Add User Story</a>
   <br>
   <br>
 
   {% if user_story_list %}
-  <table>
+  <table class="table table-striped table-hover">
     <tr>
         <td>ID</td>
         <td>User Story Name</td>
