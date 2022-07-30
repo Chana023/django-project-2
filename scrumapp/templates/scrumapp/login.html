@@ -1,5 +1,7 @@
 {% extends 'scrumapp/index.html' %}
 
+{% load crispy_forms_tags %}
+
 {% block content %}
     <head>
         <title>LoginView</title>
@@ -7,14 +9,28 @@
     </head>
 
     <body>
-<form method="POST">
-    {% csrf_token %}
-<!-- form variable -->    
- {{ form.as_p }} 
+<div class="container">
+    <form method="POST">
+        {% csrf_token %}   
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    {{ form.username|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4">
+                    {{ form.password|as_crispy_field }}
+                </div>
+                <div class="form-group">
+                    <input type="submit" name="sumbit">
+                </div>
+                <div class="form-group">
+                    <a href="{% url 'register' %}">Register</a>
+                </div>
+            </div>
+    </form>
+</div>
 
-  <input type="submit" name="sumbit">
-</form>
-<a href="{% url 'register' %}">Register</a>
+        
     </body>
+</div>
 
 {% endblock %}       

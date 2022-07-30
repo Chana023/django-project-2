@@ -20,6 +20,7 @@ from django.urls import reverse_lazy
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
@@ -31,6 +32,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+ENV = os.environ.get('ENV', 'local')
 
 # Application definition
 
@@ -88,7 +90,7 @@ DATABASES = {
        'USER': 'postgres',
        'PASSWORD': 'Infamous1!',
        'HOST': 'db',
-       'PORT': '5432',
+       'PORT': os.environ.get('DB_PORT', 5432)
     }
 }
 

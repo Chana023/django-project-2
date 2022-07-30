@@ -1,12 +1,9 @@
 {% extends 'scrumapp/index.html' %}
 {% block content %}
 <h1>{{user_story.name}}</h1>
-<p>{{user_story.id}}</p>
-<p>{{user_story.description}}</p>
-<p>Assigned to: {{ user_story.scrum_master }}</p>
+<p>Description: {{user_story.description}}</p>
+<p>Scrum Master Assigned: {{ user_story.scrum_master }}</p>
 
-
-<a href="{% url 'home'%}">Home</a>
 
 <div class="task-list">
     {% include "scrumapp/Task_list.html" %}    
