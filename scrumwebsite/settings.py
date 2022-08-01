@@ -12,9 +12,13 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+import environ
 from telnetlib import LOGOUT
 
 from django.urls import reverse_lazy
+
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,6 +35,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+ENV = os.environ.get('ENV', 'local')
 
 # Application definition
 
@@ -82,11 +87,11 @@ WSGI_APPLICATION = 'scrumwebsite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-       'NAME': 'scrumappBD',
-       'USER': 'postgres',
-       'PASSWORD': 'Infamous1!',
+       'NAME': env('DATABASE_NAME'),
+       'USER': env('DATABASE_USER'),
+       'PASSWORD': env('DATABASE_PASSWORD'),
        'HOST': 'db',
-       'PORT': '5432',
+       'PORT': 5432,
     }
 }
 
@@ -126,6 +131,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+STATICFILES_DIRS = (
+  os.path.join(BASE_DIR, 'scrumapp/static'),
+)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

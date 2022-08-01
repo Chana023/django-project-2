@@ -14,11 +14,11 @@ services:
   db:
     image: postgres
     volumes:
-    - .data/db:/var/lib/postgressql/data
-    environment:
-      - POSTGRES_DB=scrumappBD
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=Infamous1!
+      - .data/db:/var/lib/postgressql/data
+    env_file:
+      - '/scrumwebsite/.env'
     container_name: postgres_db
     ports:
       - 5432:5432
+
+
