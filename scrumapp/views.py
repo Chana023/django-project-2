@@ -53,6 +53,8 @@ def register(request):
         print('test')
         if form.is_valid():
             user = form.save()
+            defaultgroup = Group.objects.get(name='Developer')
+            user.groups.add(defaultgroup)
             return redirect(home)
 
 
