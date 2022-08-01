@@ -1,4 +1,6 @@
-<html>
+{% extends 'scrumapp/index.html' %}
+
+{% block content %}
     <head>
         <title>LoginView</title>
         
@@ -15,4 +17,4 @@
 <a href="{% url 'register' %}">Register</a>
     </body>
 
-</html>
+{% endblock %}
