@@ -1,37 +1,44 @@
 {% extends 'scrumapp/index.html' %}
 
 {% block content %}
-  <h1>Task List</h1>
-  <a href="{% url 'task-create' %}">Add Task</a>
-  <br>
-  <br>
+<div class="row p-3 mb-2 bg-dark text-white">
+  <div class="col-10 text-center">
+    <h2>Task List</h2>
+  </div>
+  <div class="col-2 text-center">
+    <a href="{% url 'task-create' %}" class="btn btn-success btn-sm">Add Task</a>
+  </div>
+
 
   {% if task_list %}
-  <table>
-    <tr>
+  <div class="table-responsive">
+  <table class="table table-hover overflow-auto">
+    <tr class="p-3 mb-2 bg-dark text-white">
         <td>ID</td>
         <td>Task Name</td>
         <td>User story</td>
         <td>Description</td>
         <td>Status</td>
         <td>Developer Assigned</td>
+        <td>Update</td>
+        <td>Delete</td>
     </tr>
     {% for task in task_list %}
-        <tr>
+        <tr class="p-3 mb-2 bg-secondary text-white">
             <td>{{ task.id }}</td>
-            <td><a href="{% url 'task-detail' task.id %}">{{ task.name }}</a></td>
+            <td><a href="{% url 'task-detail' task.id %}" class="link-light">{{ task.name }}</a></td>
             <td><a>{{task.user_story.name }}</a></td>
             <td>{{ task.description }}</td>
             <td>{{ task.status }}</td>
             <td>{{ task.developer }}</td>
-            <td><a href="{% url 'task-update' task.id %}">Update</a></td>
-            <td><a href="{% url 'task-delete' task.id %}">Delete</a></td>
+            <td><a href="{% url 'task-update' task.id %}" class="btn btn-primary btn-sm">Update</a></td>
+            <td><a href="{% url 'task-delete' task.id %}" class="btn btn-danger btn-sm">Delete</a></td>
         </tr>
     {% endfor %}
   </table>
   {% else %}
     <p>There are no Tasks availible</p>
   {% endif %}
-
-  <a href="{% url 'home'%}">Home</a>
+</div>
+</div>
 {% endblock %}

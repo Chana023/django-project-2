@@ -1,32 +1,39 @@
 {% extends 'scrumapp/index.html' %}
 
 {% block content %}
-  <h1>User Story List</h1>
-  <a href="User_Story/create">Add User Story</a>
-  <br>
-  <br>
 
+
+<div class="row p-3 mb-2 bg-dark text-white">
+  <div class="col-10 text-center">
+    <h2>User Story List</h2>
+  </div>
+  <div class="col-2">
+    <a href="User_Story/create" class="btn btn-success btn-sm">Add User Story</a>
+  </div>
+  
   {% if user_story_list %}
-  <table>
-    <tr>
-        <td>ID</td>
+  <div class="table-responsive">
+  <table class="table table-hover overflow-auto">
+    <tr class="p-3 mb-2 bg-dark text-white">
         <td>User Story Name</td>
         <td>Description</td>
         <td>Scrum Master Assigned</td>
+        <td>Update Story</td>
+        <td>Delete Story</td>
     </tr>
     {% for User_Story in user_story_list %}
-        <tr>
-            <td>{{ User_Story.id }}</td>
-            <td><a href="{% url 'user-story-detail' User_Story.id %}">{{ User_Story.name }}</a></td>
+        <tr class="p-3 mb-2 bg-secondary text-white">
+            <td><a href="{% url 'user-story-detail' User_Story.id %} " class="link-light">{{ User_Story.name }}</a></td>
             <td>{{ User_Story.description }}</td>
             <td>{{ User_Story.scrum_master }}</td>
-            <td><a href="{% url 'user-story-update' User_Story.id %}">Update</a></td>
-            <td><a href="{% url 'user-story-delete' User_Story.id %}">Delete</a></td>
-            
+            <td><a href="{% url 'user-story-update' User_Story.id %}" class="btn btn-primary btn-sm">Update</a></td>
+            <td><a href="{% url 'user-story-delete' User_Story.id %}" class="btn btn-danger btn-sm">Delete</a></td>
         </tr>
     {% endfor %}
   </table>
   {% else %}
     <p>There are no User stories availible</p>
   {% endif %}
+</div>
+</div>
 {% endblock %}
