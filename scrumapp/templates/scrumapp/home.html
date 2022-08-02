@@ -6,9 +6,11 @@
         <div class="col-10">
             <h1>ScrumApp</h1>
         </div>
-        <div class="col-2">
+        <div class="col-1">
             <p>Logged in: {{user.username}}</p>
-        <a href="{% url 'logout' %}" class="btn btn-secondary btn-sm">Logout</a>
+        </div>
+        <div class="col-1">
+            <a href="{% url 'logout' %}" class="btn btn-secondary btn-sm">Logout</a>
         </div>
     </div>
 
