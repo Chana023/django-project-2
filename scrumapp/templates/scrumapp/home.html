@@ -2,9 +2,15 @@
 
 {% block content %}
 <body>
-    <h1>Home</h1>
-    <a href="{% url 'logout' %}">Logout</a>
-    <P>{{user.username}}</P>
+    <div class="row gy-5 text-center">
+        <div class="col-10">
+            <h1>ScrumApp</h1>
+        </div>
+        <div class="col-2">
+        <a href="{% url 'logout' %}">Logout</a>
+        <P>{{user.username}}</P>
+        </div>
+    </div>
 
     <div class="user-story-list">
         {% include "scrumapp/User_Story_list.html" %}    
