@@ -1,20 +1,26 @@
 {% extends 'scrumapp/index.html' %}
 
 {% block content %}
-    <head>
-        <title>LoginView</title>
-        
-    </head>
-
     <body>
-<form method="POST">
-    {% csrf_token %}
-<!-- form variable -->    
- {{ form.as_p }} 
+        
+        <div class="position-absolute top-50 start-50 translate-middle">
+            <div class="mb-6" >
+                <div class="mb-3 row">
+            <a href="{% url 'register' %}" class="position-absolute top-0 start-50 translate-middle-x btn btn-info">Register</a>
+                </div>
+            <div class="row p-3 mb-2 bg-dark text-white border border-info">
+                <div class="mb-3 row">
+            <form method="POST">
+                
+            {% csrf_token %}
+            {{ form.as_p }} 
 
-  <input type="submit" name="sumbit">
-</form>
-<a href="{% url 'register' %}">Register</a>
+            <input type="submit" name="sumbit" value="Login" class="position-absolute bottom-0 start-50 translate-middle-x btn btn-secondary btn-sm">
+            </form>
+                </div>
+            </div>
+            </div>
+        </div>
     </body>
 
 {% endblock %}
