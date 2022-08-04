@@ -1,11 +1,15 @@
 {% extends 'scrumapp/index.html' %}
 
 {% block content %}
-  <form action="" method="post">
-    {% csrf_token %}
-    <table>
-    {{ form.as_table }}
-    </table>
-    <input type="submit" value="Submit">
-  </form>
+<div class="position-absolute top-50 start-50 translate-middle">
+  <div class="row p-3 mb-2 bg-dark text-white border border-info">
+    <form action="" method="post">
+      {% csrf_token %}
+      <table>
+      {{ form.as_table }}
+      </table>
+      <input type="submit" value="Submit" class="position-absolute bottom-140 start-50 translate-middle-x btn btn-info btn-sm text-white">
+    </form>
+  </div>
+</div>
 {% endblock %}

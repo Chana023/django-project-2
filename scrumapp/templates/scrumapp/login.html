@@ -13,9 +13,19 @@
             <form method="POST">
                 
             {% csrf_token %}
-            {{ form.as_p }} 
+            <div class="mb-3 row">
+                <label for="id_username" class="form-label col-sm-3">Username:</label>
+                <input type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="150" required="" id="id_username" class="form-control form-control-sm col-sm-2">
+            </div>
+            
+            <div class="mb-3 row">
+                <label for="id_password" class="form-label col-sm-3">Password:</label>
+                <input type="password" name="password" autocomplete="current-password" required="" id="id_password" class="form-control form-control-sm col-sm-2">
+            </div>
 
-            <input type="submit" name="sumbit" value="Login" class="position-absolute bottom-0 start-50 translate-middle-x btn btn-secondary btn-sm">
+            <div class="mb-3 row">
+                <input type="submit" name="sumbit" value="Login" class="position-absolute bottom-0 start-50 translate-middle-x btn btn-secondary btn-sm">
+            </div>
             </form>
                 </div>
             </div>
