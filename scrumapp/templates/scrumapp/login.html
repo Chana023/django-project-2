@@ -1,18 +1,36 @@
-<html>
-    <head>
-        <title>LoginView</title>
-        
-    </head>
+{% extends 'scrumapp/index.html' %}
 
+{% block content %}
     <body>
-<form method="POST">
-    {% csrf_token %}
-<!-- form variable -->    
- {{ form.as_p }} 
+        
+        <div class="position-absolute top-50 start-50 translate-middle">
+            <div class="mb-6" >
+                <div class="mb-3 row">
+            <a href="{% url 'register' %}" class="position-absolute top-0 start-50 translate-middle-x btn btn-info">Register</a>
+                </div>
+            <div class="row p-3 mb-2 bg-dark text-white border border-info">
+                <div class="mb-3 row">
+            <form method="POST">
+                
+            {% csrf_token %}
+            <div class="mb-3 row">
+                <label for="id_username" class="form-label col-sm-3">Username:</label>
+                <input type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="150" required="" id="id_username" class="form-control form-control-sm col-sm-2">
+            </div>
+            
+            <div class="mb-3 row">
+                <label for="id_password" class="form-label col-sm-3">Password:</label>
+                <input type="password" name="password" autocomplete="current-password" required="" id="id_password" class="form-control form-control-sm col-sm-2">
+            </div>
 
-  <input type="submit" name="sumbit">
-</form>
-<a href="{% url 'register' %}">Register</a>
+            <div class="mb-3 row">
+                <input type="submit" name="sumbit" value="Login" class="position-absolute bottom-0 start-50 translate-middle-x btn btn-secondary btn-sm">
+            </div>
+            </form>
+                </div>
+            </div>
+            </div>
+        </div>
     </body>
 
-</html>
+{% endblock %}

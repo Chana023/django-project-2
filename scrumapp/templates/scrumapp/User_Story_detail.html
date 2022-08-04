@@ -1,11 +1,21 @@
+{% extends 'scrumapp/index.html' %}
+
 {% block content %}
-<h1>{{user_story.name}}</h1>
-<p>{{user_story.id}}</p>
-<p>{{user_story.description}}</p>
-<p>Assigned to: {{ user_story.scrum_master }}</p>
 
+<div class="row gy-5 text-center p-3 mb-2 bg-info text-white">
+    <div class="col-10">
+        <h1>{{user_story.name}}</h1>
+    </div>
+    <div class="col-2">
+        <a href="{% url 'home'%}" class="btn btn-secondary btn-sm">Home</a>
+    </div>
+    
+</div>
 
-<a href="{% url 'home'%}">Home</a>
+<div class="bg-secondary text-white">
+    <p>Description: {{user_story.description}}</p>
+    <p>Assigned to: {{ user_story.scrum_master }}</p>
+</div>
 
 <div class="task-list">
     {% include "scrumapp/Task_list.html" %}    
