@@ -18,6 +18,8 @@ class User_Story(models.Model):
     description = models.TextField()
     last_update = models.DateTimeField(auto_now=True)
     scrum_master = models.ForeignKey(User, on_delete=models.SET_NULL, default=None, blank=True, null=True)
+    completed_at = models.DateTimeField(default=None, blank=True, null=True)
+    completed_by = models.ForeignKey(User, on_delete=models.SET_NULL, default=None, blank=True, null=True, related_name='completed_by')
 
     def __str__(self):
         return self.name
@@ -34,6 +36,7 @@ class Task(models.Model):
     description = models.TextField()
     status = models.CharField(max_length=1, choices=STATUS_CHOICES,default='N')
     developer = models.ForeignKey(User, on_delete=models.SET_NULL, default=None, blank=True, null=True)
+    completed_at = models.DateTimeField(default=None, blank=True, null=True)
 
     def __str__(self):
         return self.name
