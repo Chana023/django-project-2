@@ -1,3 +1,4 @@
+from urllib import response
 from django.shortcuts import redirect, render
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -7,10 +8,21 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.models import Group
 from django.core.exceptions import PermissionDenied
-
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.parsers import JSONParser
+from django.http import Http404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from scrumapp import serializers
+from rest_framework import generics
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
 # In application imports
 from scrumapp.models import Task, User, User_Story
-
+from scrumapp.serializers import TaskSerializer
 from scrumapp.forms import CustomUserCreationForm
 
 # Create your views here.
@@ -136,4 +148,21 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):
     model = Task
 
+
+#API views
+
+@api_view(['GET'])
+def api_root(request, format=None):
+    return Response({
+        'Tasks list': reverse('api-task-list', request=request, format=format),
+        #'Task detail': reverse('api-task-detail', request=request, format=format),
+    })
+
+class TaskList(generics.ListCreateAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+
+class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
     
