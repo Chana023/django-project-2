@@ -24,6 +24,7 @@ urlpatterns = [
     path('api', views.api_root),
     path('api/task/', views.TaskList.as_view(), name='api-task-list'),
     path('api/task/<int:pk>/', views.TaskDetail.as_view(), name='api-task-detail'),
+    path('api/task/<int:pk>/complete', views.TaskComplete.as_view(), name='api-task-complete'),
 
 
     
