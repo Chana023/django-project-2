@@ -22,7 +22,7 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 # In application imports
 from scrumapp.models import Task, User, User_Story
-from scrumapp.serializers import TaskCompleteSerializer, TaskSerializer
+from scrumapp.serializers import TaskCompleteSerializer, TaskSerializer, UserStorySerializier
 from scrumapp.forms import CustomUserCreationForm
 from scrumapp.logic import taskComplete
 
@@ -177,4 +177,11 @@ class TaskComplete(generics.RetrieveUpdateAPIView):
         request_user = request.user.id
         taskComplete(self, data_dict, request_user)
         return self.partial_update(request, *args, **kwargs)
-    
+
+class UserStoryList(generics.ListCreateAPIView):
+    queryset = User_Story.objects.all()
+    serializer_class = UserStorySerializier
+
+class UserStoryDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User_Story.objects.all()
+    serializer_class = UserStorySerializier
