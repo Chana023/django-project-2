@@ -23,7 +23,7 @@ from rest_framework.reverse import reverse
 from scrumapp.models import Task, User, User_Story
 from scrumapp.serializers import TaskCompleteSerializer, TaskSerializer, UserStorySerializier, UserStoryCompleteSerializer
 from scrumapp.forms import CustomUserCreationForm
-from scrumapp.logic import taskComplete
+from scrumapp.logic import story_complete, taskComplete 
 
 # Create your views here.
 
@@ -174,6 +174,8 @@ class TaskComplete(generics.CreateAPIView):
         return taskComplete(kwargs['pk'],request.user.id)
         
 
+#User story APIviews
+
 class UserStoryList(generics.ListCreateAPIView):
     queryset = User_Story.objects.all()
     serializer_class = UserStorySerializier
@@ -182,6 +184,10 @@ class UserStoryDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User_Story.objects.all()
     serializer_class = UserStorySerializier
 
-class UserStoryComplete(generics.RetrieveUpdateAPIView):
-    queryset = Task.objects.all()
+class UserStoryComplete(generics.CreateAPIView):
+    queryset = User_Story.objects.all()
     serializer_class = UserStoryCompleteSerializer
+
+    def post(self, request, *args, **kwargs):
+        return story_complete(kwargs['pk'], request.user.id)
+        
