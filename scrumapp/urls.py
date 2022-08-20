@@ -22,12 +22,14 @@ urlpatterns = [
     path('Task/detail/<int:pk>', views.TaskDetailView.as_view(), name='task-detail'),
     #API
     path('api', views.api_root),
+
     path('api/task/', views.TaskList.as_view(), name='api-task-list'),
     path('api/task/<int:pk>/', views.TaskDetail.as_view(), name='api-task-detail'),
     path('api/task/<int:pk>/complete', views.TaskComplete.as_view(), name='api-task-complete'),
 
-    path('api/story/', views.UserStoryList.as_view(), name='api-user-story-list'),
+    path('api/story/', views.UserStoryList.as_view(), name='api-story-list'),
     path('api/story/<int:pk>/', views.UserStoryDetail.as_view(), name='api-story-detail'),
+    path('api/story/<int:pk>/complete', views.UserStoryComplete.as_view(), name='api-story-complete'),
 
 
     

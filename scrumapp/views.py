@@ -1,4 +1,3 @@
-from urllib import response
 from django.shortcuts import redirect, render
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -22,7 +21,7 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 # In application imports
 from scrumapp.models import Task, User, User_Story
-from scrumapp.serializers import TaskCompleteSerializer, TaskSerializer, UserStorySerializier
+from scrumapp.serializers import TaskCompleteSerializer, TaskSerializer, UserStorySerializier, UserStoryCompleteSerializer
 from scrumapp.forms import CustomUserCreationForm
 from scrumapp.logic import taskComplete
 
@@ -167,16 +166,13 @@ class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
-class TaskComplete(generics.RetrieveUpdateAPIView):
+class TaskComplete(generics.CreateAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskCompleteSerializer
 
-    def patch(self, request, *args, **kwargs):
-        data_dict = {}
-        data_dict = request.data
-        request_user = request.user.id
-        taskComplete(self, data_dict, request_user)
-        return self.partial_update(request, *args, **kwargs)
+    def post(self, request, *args, **kwargs):
+        return taskComplete(kwargs['pk'],request.user.id)
+        
 
 class UserStoryList(generics.ListCreateAPIView):
     queryset = User_Story.objects.all()
@@ -185,3 +181,7 @@ class UserStoryList(generics.ListCreateAPIView):
 class UserStoryDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User_Story.objects.all()
     serializer_class = UserStorySerializier
+
+class UserStoryComplete(generics.RetrieveUpdateAPIView):
+    queryset = Task.objects.all()
+    serializer_class = UserStoryCompleteSerializer

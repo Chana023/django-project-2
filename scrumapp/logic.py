@@ -1,14 +1,17 @@
 from datetime import datetime
 from rest_framework.exceptions import PermissionDenied
+from scrumapp.models import Task, User, User_Story
+from rest_framework import status
+from rest_framework.response import Response
 
-#Logic tests
+#Logic functions
 
-def taskComplete(self, data, requestuser):
-    data_dict = data
-    if requestuser == data_dict['developer']:
-            data_dict['status'] = 'C'
-            data_dict['completed_at'] = datetime.now()
-            return data_dict
-    raise PermissionDenied({"message":"You don't have permission to access",
-                                "Task": data_dict['name']})
-    
+def taskComplete(taskid, userid):
+        
+        if(userid == Task.objects.filter(id=taskid).values('developer_id')[0].get('developer_id')):
+                task = Task.objects.filter(id=taskid).update(status='C')
+                task = Task.objects.filter(id=taskid).update(completed_at=datetime.now())
+                return Response(status=status.HTTP_200_OK)
+        else:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
+        
