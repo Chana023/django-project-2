@@ -152,42 +152,52 @@ class TaskDetailView(LoginRequiredMixin, generic.DetailView):
 #API views
 
 @api_view(['GET'])
+@login_required
 def api_root(request, format=None):
     return Response({
         'Tasks list': reverse('api-task-list', request=request, format=format),
-        #'Task detail': reverse('api-task-detail', request=request, format=format),
+        'Story list': reverse('api-story-list', request=request, format=format),
     })
 
-class TaskList(generics.ListCreateAPIView):
+class TaskList(LoginRequiredMixin, PermissionRequiredMixin, generics.ListCreateAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+    permission_required = 'scrumapp.view_task'
+
+class TaskDetail(LoginRequiredMixin , generics.RetrieveUpdateDestroyAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
-class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Task.objects.all()
-    serializer_class = TaskSerializer
-
-class TaskComplete(generics.CreateAPIView):
+class TaskComplete(LoginRequiredMixin, generics.CreateAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskCompleteSerializer
 
     def post(self, request, *args, **kwargs):
-        return taskComplete(kwargs['pk'],request.user.id)
+            
+        if taskComplete(kwargs['pk'],request.user.id) == True:
+            return Response(status=status.HTTP_200_OK)
+        elif taskComplete(kwargs['pk'],request.user.id) == False:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
         
 
 #User story APIviews
 
-class UserStoryList(generics.ListCreateAPIView):
+class UserStoryList(LoginRequiredMixin, generics.ListCreateAPIView):
     queryset = User_Story.objects.all()
     serializer_class = UserStorySerializier
 
-class UserStoryDetail(generics.RetrieveUpdateDestroyAPIView):
+class UserStoryDetail(LoginRequiredMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = User_Story.objects.all()
     serializer_class = UserStorySerializier
 
-class UserStoryComplete(generics.CreateAPIView):
+class UserStoryComplete(LoginRequiredMixin, generics.CreateAPIView):
     queryset = User_Story.objects.all()
     serializer_class = UserStoryCompleteSerializer
 
     def post(self, request, *args, **kwargs):
-        return story_complete(kwargs['pk'], request.user.id)
+
+        if story_complete(kwargs['pk'], request.user.id) == True:
+            return Response(status=status.HTTP_200_OK)
+        elif story_complete(kwargs['pk'], request.user.id) == False:
+            return Response({'tasks for user story are not complete'},status=status.HTTP_400_BAD_REQUEST)
         

@@ -11,9 +11,9 @@ def taskComplete(taskid, userid):
         if(userid == Task.objects.filter(id=taskid).values('developer_id')[0].get('developer_id')):
                 Task.objects.filter(id=taskid).update(status='C')
                 Task.objects.filter(id=taskid).update(completed_at=datetime.now())
-                return Response(status=status.HTTP_200_OK)
+                return True
         else:
-                return Response(status=status.HTTP_401_UNAUTHORIZED)
+                return False
 
 def is_tasks_complete(userstoryid):
         task_statuses = Task.objects.filter(user_story=userstoryid).values('status')
@@ -26,9 +26,9 @@ def story_complete(userstoryid, userid):
         if is_tasks_complete(userstoryid=userstoryid) == True:
                 User_Story.objects.filter(id=userstoryid).update(completed_at=datetime.now())
                 User_Story.objects.filter(id=userstoryid).update(completed_by=userid)
-                return Response(status=status.HTTP_200_OK)
+                return True
         else:
-                return Response({'tasks for user story are not complete'},status=status.HTTP_400_BAD_REQUEST)
+                return False
         
 
         
