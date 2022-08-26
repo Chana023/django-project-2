@@ -8,6 +8,7 @@ django = "*"
 psycopg2 = "*"
 django-environ = "*"
 djangorestframework = "*"
+factory-boy = "*"
 
 [dev-packages]
 
