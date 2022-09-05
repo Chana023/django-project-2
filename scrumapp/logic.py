@@ -56,12 +56,18 @@ def is_user_allowed_to_update_Task(task_id, user_id):
         else:
             raise False
 
-def get_task_list(user_id):
+def get_user_story_list(user_id):
         user = User.objects.filter(id=user_id)[0]
+        list_of_tasks_for_user = []
+
         if user.groups.filter(name='Developer'):
-                print(user.id)
-                return Task.objects.filter(developer=user.id)
+                tasks_for_developer = Task.objects.filter(developer=user)
+                for task in tasks_for_developer:
+                        list_of_tasks_for_user.append(task.user_story.id)
+                set_of_story_id_for_user = set(list_of_tasks_for_user)
+                print(set_of_story_id_for_user)
+                return User_Story.objects.filter(id__in=set_of_story_id_for_user)
         elif user.groups.filter(name='Scrum Master'):
-                return Task.objects.all()
+                return User_Story.objects.all()
 
         
