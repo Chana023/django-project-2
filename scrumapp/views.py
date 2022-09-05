@@ -23,7 +23,7 @@ from rest_framework.reverse import reverse
 from scrumapp.models import Task, User, User_Story
 from scrumapp.serializers import TaskCompleteSerializer, TaskSerializer, UserStorySerializier, UserStoryCompleteSerializer
 from scrumapp.forms import CustomUserCreationForm
-from scrumapp.logic import story_complete, taskComplete 
+from scrumapp.logic import is_developer, is_user_allowed_to_update_Task, story_complete, taskComplete 
 
 # Create your views here.
 
@@ -168,6 +168,13 @@ class TaskDetail(LoginRequiredMixin , generics.RetrieveUpdateDestroyAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
+    def put(self, request, *args, **kwargs):
+        is_user_allowed_to_update_Task(task_id=kwargs['pk'],user_id=request.user.id)
+        
+        return self.update(request, *args, **kwargs)
+        
+        #is_user_allowed_to_update_Task(kwargs)
+
 class TaskComplete(LoginRequiredMixin, generics.CreateAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskCompleteSerializer
@@ -199,5 +206,5 @@ class UserStoryComplete(LoginRequiredMixin, generics.CreateAPIView):
         if story_complete(kwargs['pk'], request.user.id) == True:
             return Response(status=status.HTTP_200_OK)
         elif story_complete(kwargs['pk'], request.user.id) == False:
-            return Response({'tasks for user story are not complete'},status=status.HTTP_400_BAD_REQUEST)
+            return Response({'tasks for user story are not complete or only Scrum Masters can complete User stories'},status=status.HTTP_400_BAD_REQUEST)
         

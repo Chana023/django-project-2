@@ -3,6 +3,7 @@ from scrumapp.logic import *
 from scrumapp.models import *
 from factory.django import DjangoModelFactory
 import factory
+from django.contrib.auth.models import Group
 
 class UserFactory(DjangoModelFactory):
     class Meta:
@@ -26,6 +27,7 @@ class TestTask(TestCase):
 
     def setUp(self):
         developerforTestTask1 = UserFactory(username = 'devMan1234', password = 'somePassword')
+        scrum_master = UserFactory(username = 'scrummy123', password = 'somePassword')
         randomDev = UserFactory(username = 'randomDev', password = 'somePassword')
         user_story = UserStoryFactory()
         testTask1 = TaskFactory(name='TestTask1', developer=developerforTestTask1, user_story=user_story, status='N')
@@ -64,8 +66,8 @@ class TestTask(TestCase):
         """
         Check if when all tasks are completed the function 'is_tasks_complete' returns true
         """
-        user_story_id_where_all_tasks_complete = User_Story.objects.filter(name='story_tasks_completed').values('id')[0].get('id')
-        self.assertTrue(is_tasks_complete(user_story_id_where_all_tasks_complete))
+        user_story_id_where_all_task_complete = User_Story.objects.filter(name='story_tasks_completed').values('id')[0].get('id')
+        self.assertTrue(is_tasks_complete(user_story_id_where_all_task_complete))
 
     def test_if_there_is_an_incomplete_task_in_story(self):
         """
@@ -73,11 +75,3 @@ class TestTask(TestCase):
         """
         user_story_id_where_all_tasks_complete = User_Story.objects.filter(name='story_tasks_incomplete').values('id')[0].get('id')
         self.assertFalse(is_tasks_complete(user_story_id_where_all_tasks_complete))
-
-        
-    
-
-
-    
-
-
