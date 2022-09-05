@@ -23,7 +23,7 @@ from rest_framework.reverse import reverse
 from scrumapp.models import Task, User, User_Story
 from scrumapp.serializers import TaskCompleteSerializer, TaskSerializer, UserStorySerializier, UserStoryCompleteSerializer
 from scrumapp.forms import CustomUserCreationForm
-from scrumapp.logic import is_developer, is_user_allowed_to_update_Task, story_complete, taskComplete 
+from scrumapp.logic import get_task_list, is_developer, is_user_allowed_to_update_Task, story_complete, taskComplete 
 
 # Create your views here.
 
@@ -164,6 +164,10 @@ class TaskList(LoginRequiredMixin, PermissionRequiredMixin, generics.ListCreateA
     serializer_class = TaskSerializer
     permission_required = 'scrumapp.view_task'
 
+    def get_queryset(self):
+        
+        return get_task_list(user_id=self.request.user.id)
+
 class TaskDetail(LoginRequiredMixin , generics.RetrieveUpdateDestroyAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
@@ -192,6 +196,9 @@ class TaskComplete(LoginRequiredMixin, generics.CreateAPIView):
 class UserStoryList(LoginRequiredMixin, generics.ListCreateAPIView):
     queryset = User_Story.objects.all()
     serializer_class = UserStorySerializier
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
 class UserStoryDetail(LoginRequiredMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = User_Story.objects.all()

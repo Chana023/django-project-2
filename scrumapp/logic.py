@@ -56,4 +56,12 @@ def is_user_allowed_to_update_Task(task_id, user_id):
         else:
             raise False
 
+def get_task_list(user_id):
+        user = User.objects.filter(id=user_id)[0]
+        if user.groups.filter(name='Developer'):
+                print(user.id)
+                return Task.objects.filter(developer=user.id)
+        elif user.groups.filter(name='Scrum Master'):
+                return Task.objects.all()
+
         
