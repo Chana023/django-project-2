@@ -54,7 +54,7 @@ def is_user_allowed_to_update_Task(task_id, user_id):
         elif user.groups.filter(name='Scrum Master'):
             return True
         else:
-            raise False
+            return False
 
 def get_user_story_list(user_id):
         user = User.objects.filter(id=user_id)[0]

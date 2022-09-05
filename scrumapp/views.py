@@ -170,9 +170,10 @@ class TaskDetail(LoginRequiredMixin , generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TaskSerializer
 
     def put(self, request, *args, **kwargs):
-        is_user_allowed_to_update_Task(task_id=kwargs['pk'],user_id=request.user.id)
-        
-        return self.update(request, *args, **kwargs)
+        if is_user_allowed_to_update_Task(task_id=kwargs['pk'],user_id=request.user.id) == True:
+            return self.update(request, *args, **kwargs)
+        elif is_user_allowed_to_update_Task(task_id=kwargs['pk'],user_id=request.user.id) == False:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
         
         #is_user_allowed_to_update_Task(kwargs)
 
