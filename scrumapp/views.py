@@ -7,11 +7,23 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.models import Group
 from django.core.exceptions import PermissionDenied
-
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.parsers import JSONParser
+from django.http import Http404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from scrumapp import serializers
+from rest_framework import generics
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
 # In application imports
 from scrumapp.models import Task, User, User_Story
-
+from scrumapp.serializers import TaskCompleteSerializer, TaskSerializer, UserStorySerializier, UserStoryCompleteSerializer
 from scrumapp.forms import CustomUserCreationForm
+from scrumapp.logic import get_user_story_list, is_developer, is_user_allowed_to_update_Task, story_complete, taskComplete 
 
 # Create your views here.
 
@@ -136,4 +148,68 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):
     model = Task
 
-    
+
+#API views
+
+@api_view(['GET'])
+@login_required
+def api_root(request, format=None):
+    return Response({
+        'Tasks list': reverse('api-task-list', request=request, format=format),
+        'Story list': reverse('api-story-list', request=request, format=format),
+    })
+
+class TaskList(LoginRequiredMixin, PermissionRequiredMixin, generics.ListCreateAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+    permission_required = 'scrumapp.view_task'
+
+
+class TaskDetail(LoginRequiredMixin , generics.RetrieveUpdateDestroyAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+
+    def put(self, request, *args, **kwargs):
+        if is_user_allowed_to_update_Task(task_id=kwargs['pk'],user_id=request.user.id) == True:
+            return self.update(request, *args, **kwargs)
+        elif is_user_allowed_to_update_Task(task_id=kwargs['pk'],user_id=request.user.id) == False:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        
+        #is_user_allowed_to_update_Task(kwargs)
+
+class TaskComplete(LoginRequiredMixin, generics.CreateAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskCompleteSerializer
+
+    def post(self, request, *args, **kwargs):
+            
+        if taskComplete(kwargs['pk'],request.user.id) == True:
+            return Response(status=status.HTTP_200_OK)
+        elif taskComplete(kwargs['pk'],request.user.id) == False:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        
+
+#User story APIviews
+
+class UserStoryList(LoginRequiredMixin, generics.ListCreateAPIView):
+    queryset = User_Story.objects.all()
+    serializer_class = UserStorySerializier
+
+    def get_queryset(self):
+        return get_user_story_list(self.request.user.id)
+
+class UserStoryDetail(LoginRequiredMixin, generics.RetrieveUpdateDestroyAPIView):
+    queryset = User_Story.objects.all()
+    serializer_class = UserStorySerializier
+
+class UserStoryComplete(LoginRequiredMixin, generics.CreateAPIView):
+    queryset = User_Story.objects.all()
+    serializer_class = UserStoryCompleteSerializer
+
+    def post(self, request, *args, **kwargs):
+
+        if story_complete(kwargs['pk'], request.user.id) == True:
+            return Response(status=status.HTTP_200_OK)
+        elif story_complete(kwargs['pk'], request.user.id) == False:
+            return Response({'tasks for user story are not complete or only Scrum Masters can complete User stories'},status=status.HTTP_400_BAD_REQUEST)
+        
