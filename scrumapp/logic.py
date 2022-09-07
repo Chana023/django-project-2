@@ -28,9 +28,9 @@ def is_tasks_complete(userstoryid):
                         return False
         return True
 
-def story_complete(userstoryid, userid):
+def story_complete(userstoryid: int, userid: int) -> bool:
         user = User.objects.filter(id=userid)[0]
-        print()
+        
         if is_tasks_complete(userstoryid=userstoryid) == True and is_scrum_master(user) == True:
                 User_Story.objects.filter(id=userstoryid).update(completed_at=datetime.now())
                 User_Story.objects.filter(id=userstoryid).update(completed_by=userid)

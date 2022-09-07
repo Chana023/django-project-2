@@ -10,8 +10,10 @@ class UserFactory(DjangoModelFactory):
         model = User
 
 class TaskFactory(DjangoModelFactory):
+    name = factory.Faker('name')
     class Meta:
         model = Task
+
 
 class UserStoryFactory(DjangoModelFactory):
     class Meta:
@@ -30,7 +32,7 @@ class TestTask(TestCase):
         scrum_master = UserFactory(username = 'scrummy123', password = 'somePassword')
         randomDev = UserFactory(username = 'randomDev', password = 'somePassword')
         user_story = UserStoryFactory()
-        testTask1 = TaskFactory(name='TestTask1', developer=developerforTestTask1, user_story=user_story, status='N')
+        testTask1 = TaskFactory(developer=developerforTestTask1, user_story=user_story, status='N')
 
         user_story_all_task_completed = UserStoryFactory(name='story_tasks_completed')
         completeTask1 = TaskFactory(user_story=user_story_all_task_completed, status='C')
